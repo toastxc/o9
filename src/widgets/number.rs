@@ -98,23 +98,6 @@ impl Default for NumberXML {
     }
 }
 
-/*
-<Widget Shape="32"
- Name="widget-0"
-  BitmapList=""
-  X="39"
-   Y="33"
-    Width="48"
-     Height="48"
-      Alpha="255"
-       Visible_Src="0"
-        Digits="1"
-         Alignment="0"
-          Value_Src="0"
-           Spacing="0"
-Blanking="0"/>
- */
-
 impl Number {
     pub fn new(value_src: impl Into<u32>, dpi: u32, digits: u8) -> Self {
         Self {

@@ -13,8 +13,24 @@ pub struct Ui {
     x_spacers: Option<u32>,
 }
 
+// fn dependency_check() {
+//     let check = ["~/.o9/mi_create", "python3", "git"];
+//
+//     Command::new("bash")
+//         .arg("-c")
+//         .arg(&format!(
+//             "python3 ~/Downloads/Mi-Create/src/main.py {}",
+//             self.conf_path()
+//         ))
+//         .output()
+//         .expect("failed to execute process");
+//
+//
+// }
+
 impl Ui {
     pub fn new(title: impl Into<String>, project_path: impl Into<String>) -> Self {
+
         Self {
             project_path: project_path.into(),
             title: title.into(),
@@ -39,6 +55,8 @@ impl Ui {
         format!("{}/{}.fprj", self.project_path, self.title)
     }
     pub fn build(mut self, attach: bool) {
+
+
         for (start, amount) in self.y_spacers.clone() {
             (start..self.widgets.len()).for_each(|x| {
                 *self.widgets[x].y() += amount;
@@ -60,6 +78,7 @@ impl Ui {
         buf += r#"</Screen>
 </FaceProject>"#;
 
+        println!("{}", self.conf_path());
         std::fs::write(self.conf_path(), buf).unwrap();
 
         svg::raster(
@@ -68,14 +87,16 @@ impl Ui {
                 .filter_map(|a| a.dpi())
                 .collect::<HashSet<u32>>(),
         );
-
+//
         if attach {
+            let arg = format!(
+                "~/.o9/mi-create_bin {}",
+                self.conf_path()
+            );
+            println!("{}", arg);
             Command::new("bash")
                 .arg("-c")
-                .arg(&format!(
-                    "python3 ~/Downloads/Mi-Create/src/main.py {}",
-                    self.conf_path()
-                ))
+                .arg(&arg)
                 .output()
                 .expect("failed to execute process");
         }
@@ -84,9 +105,9 @@ impl Ui {
         let len = self.widgets.len();
         self.y_spacers.push((len, height));
     }
-    pub fn horizontal_spaced(&mut self, add_contents: impl FnOnce(&mut Ui)) {
+    pub fn horizontal_spaced(&mut self, space: Option<u32>, add_contents: impl FnOnce(&mut Ui)) {
         self.horizontal(add_contents);
-        self.spacer(80);
+        self.spacer(space.unwrap_or(80));
     }
     pub fn horizontal(&mut self, add_contents: impl FnOnce(&mut Ui)) {
         let start = self.widgets.len();
@@ -108,6 +129,11 @@ impl Ui {
     pub fn number(&mut self, value_src: u32, dpi: u32, digits: u8) {
         self.add(Number::new(value_src, dpi, digits))
     }
+    pub fn numbers(&mut self, value_src: impl Into<Box<[u32]>>, dpi: u32, digits: u8) {
+       for value in value_src.into() {
+           self.add(Number::new(value, dpi, digits))
+       }
+    }
     pub fn add(&mut self, i: impl Into<Widgets>) {
         if let Some(x_spacer) = self.x_spacers {
             *self.widgets.last_mut().unwrap().width_mut() += x_spacer;
@@ -123,11 +149,11 @@ impl Ui {
         raster_custom(dpi, Some(name));
     }
 
-    pub fn add_number_row(&mut self, dpi: u32, src: impl Into<Box<[u32]>>) {
-        self.horizontal_spaced(|ui| {
+    pub fn add_number_row(&mut self, dpi: u32, spacing: u32, src: impl Into<Box<[u32]>>) {
+        self.horizontal_spaced(None, |ui| {
             for x in src.into() {
                 ui.number(x, dpi, 2);
-                ui.x_spacer(30);
+                ui.x_spacer(spacing);
             }
         });
     }

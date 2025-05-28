@@ -30,7 +30,10 @@ fn main() {
                 .replace([')', ',', '%'], "")
                 .replace(['/', '('], "_");
 
-            let bitter_str = bitter_str.to_case(Case::Pascal);
+            let mut bitter_str = bitter_str.to_case(Case::Pascal);
+            if bitter_str == "None".to_string() {
+                bitter_str = "NoneValue".to_string()
+            }
             let str = format!(r#"pub const {}: u32 = {};"#, bitter_str, bitter.id_fprj);
 
             if inner.contains(&bitter_str) {
