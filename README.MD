@@ -1,3 +1,6 @@
+## Creating watch faces
+
+```rust
 use o9::{value_src::xiaomi_band_9::*, Ui};
 
 fn main() {
@@ -18,3 +21,5 @@ fn gui(ui: &mut Ui) {
         ui.number(Minute, BIG, 2);
     });
 }
+```
+
