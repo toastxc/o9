@@ -30,3 +30,15 @@ fn gui(ui: &mut Ui) {
 ```
 ### Preview
 ![img.png](img.png)
+
+### Todo
+#### Integration
+Context: This program utilizes a read-only install of https://github.com/ooflet/Mi-Create for the WYSIWYG and for compiling the watchfaces. 
+- Automate Mi-Create installation
+- Integrate Mi-Crate watchface compilation
+- project creation tool
+
+#### Widgets
+- Images
+- Vector Images
+- Arcs
