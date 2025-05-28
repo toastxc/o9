@@ -42,3 +42,9 @@ Context: This program utilizes a read-only install of https://github.com/ooflet/
 - Images
 - Vector Images
 - Arcs
+
+
+### Wontfix
+#### Windows support
+This tool utilizes BASH (not necessarily POSIX) scripts and wine. We suggest looking elsewhere for Windows compatible alternatives
+https://toastxc.xyz/policies/#windows
